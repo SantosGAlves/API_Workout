@@ -15,7 +15,7 @@ router = APIRouter()
 
 @router.post(
     '/', 
-    summary='Criar um novo atleta',
+    summary='Gerar um novo atleta',
     status_code=status.HTTP_201_CREATED,
     response_model=AtletaOut
 )
@@ -33,7 +33,7 @@ async def post(
     if not categoria:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST, 
-            detail=f'A categoria {categoria_nome} não foi encontrada.'
+            detail=f'A categoria {categoria_nome} não foi achada.'
         )
     
     centro_treinamento = (await db_session.execute(
@@ -43,7 +43,7 @@ async def post(
     if not centro_treinamento:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST, 
-            detail=f'O centro de treinamento {centro_treinamento_nome} não foi encontrado.'
+            detail=f'O CT {centro_treinamento_nome} não foi encontrado.'
         )
     try:
         atleta_out = AtletaOut(id=uuid4(), created_at=datetime.utcnow(), **atleta_in.model_dump())
@@ -57,7 +57,7 @@ async def post(
     except Exception:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, 
-            detail='Ocorreu um erro ao inserir os dados no banco'
+            detail='& Ocorreu um erro ao inserir os dados &'
         )
 
     return atleta_out
@@ -97,7 +97,7 @@ async def get(id: UUID4, db_session: DatabaseDependency) -> AtletaOut:
 
 @router.patch(
     '/{id}', 
-    summary='Editar um Atleta pelo id',
+    summary='Alterar um Atleta pelo id',
     status_code=status.HTTP_200_OK,
     response_model=AtletaOut,
 )
